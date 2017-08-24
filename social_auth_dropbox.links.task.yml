@@ -1,0 +1,4 @@
+social_auth_dropbox.settings.tab:
+  title: 'Dropbox'
+  route_name: social_auth_dropbox.settings_form
+  base_route: social_auth.integrations

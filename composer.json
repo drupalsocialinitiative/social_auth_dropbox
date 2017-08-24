@@ -1,0 +1,26 @@
+{
+    "name": "drupal/social_auth_dropbox",
+    "type": "drupal-module",
+    "description": "Social Auth integration for Dropbox.",
+    "keywords": ["Drupal"],
+    "license": "GPL-2.0+",
+    "homepage": "https://www.drupal.org/project/social_auth_dropbox",
+    "minimum-stability": "dev",
+    "support": {
+        "issues": "https://www.drupal.org/project/issues/social_auth_dropbox",
+        "source": "http://cgit.drupalcode.org/social_auth_dropbox"
+    },
+    "require": {
+        "stevenmaguire/oauth2-dropbox": "^2.0"
+    },
+    "authors": [
+        {
+            "name": "Getulio Valentin Sánchez (gvso)",
+            "email": "valentin2507@gmail.com"
+        },
+        {
+            "name": "Himanshu Dixit (himanshu-dixit)",
+            "email": "hudixt@gmail.com"
+        }
+    ]
+}
