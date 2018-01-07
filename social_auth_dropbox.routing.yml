@@ -1,23 +1,23 @@
 social_auth_dropbox.redirect_to_dropbox:
-  path: 'user/login/dropbox'
+  path: '/user/login/dropbox'
   defaults:
     _controller: '\Drupal\social_auth_dropbox\Controller\DropboxAuthController::redirectToDropbox'
   requirements:
-    _role: 'anonymous'
+    _access: 'TRUE'
   options:
     no_cache: TRUE
 
 social_auth_dropbox.callback:
-  path: 'user/login/dropbox/callback'
+  path: '/user/login/dropbox/callback'
   defaults:
     _controller: '\Drupal\social_auth_dropbox\Controller\DropboxAuthController::callback'
   requirements:
-    _role: 'anonymous'
+    _access: 'TRUE'
   options:
     no_cache: TRUE
 
 social_auth_dropbox.settings_form:
-  path: 'admin/config/social-api/social-auth/dropbox'
+  path: '/admin/config/social-api/social-auth/dropbox'
   defaults:
     _title: 'Social Auth Dropbox settings'
     _form: '\Drupal\social_auth_dropbox\Form\DropboxAuthSettingsForm'
