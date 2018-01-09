@@ -45,7 +45,7 @@ class DropboxAuthManager extends OAuth2Manager {
   /**
    * The Dropbox client object.
    *
-   * @var \League\OAuth2\Client\Provider\Dropbox
+   * @var \Stevenmaguire\OAuth2\Client\Provider\Dropbox
    */
   protected $client;
   /**
@@ -58,7 +58,7 @@ class DropboxAuthManager extends OAuth2Manager {
   /**
    * The Dropbox user.
    *
-   * @var \League\OAuth2\Client\Provider\DropboxUser
+   * @var \Stevenmaguire\OAuth2\Client\Provider\DropboxResourceOwner
    */
   protected $user;
 
@@ -75,7 +75,6 @@ class DropboxAuthManager extends OAuth2Manager {
    * @var array
    */
   protected $settings;
-
 
   /**
    * Constructor.
@@ -101,9 +100,6 @@ class DropboxAuthManager extends OAuth2Manager {
 
   /**
    * Authenticates the users by using the access token.
-   *
-   * @return $this
-   *   The current object.
    */
   public function authenticate() {
     $this->token = $this->client->getAccessToken('authorization_code',
@@ -113,7 +109,7 @@ class DropboxAuthManager extends OAuth2Manager {
   /**
    * Gets the data by using the access token returned.
    *
-   * @return League\OAuth2\Client\Provider\DropboxUser
+   * @return \Stevenmaguire\OAuth2\Client\Provider\DropboxResourceOwner
    *   User info returned by the Dropbox.
    */
   public function getUserInfo() {
@@ -157,6 +153,5 @@ class DropboxAuthManager extends OAuth2Manager {
     // Generate and return the URL where we should redirect the user.
     return $state;
   }
-
 
 }

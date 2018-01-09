@@ -11,7 +11,7 @@ use Drupal\social_api\Plugin\NetworkBase;
 use Drupal\social_api\SocialApiException;
 use Drupal\social_auth_dropbox\Settings\DropboxAuthSettings;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use League\OAuth2\Client\Provider\Dropbox;
+use Stevenmaguire\OAuth2\Client\Provider\Dropbox;
 use Drupal\Core\Site\Settings;
 
 /**
@@ -122,7 +122,7 @@ class DropboxAuth extends NetworkBase implements DropboxAuthInterface {
   /**
    * Sets the underlying SDK library.
    *
-   * @return \League\OAuth2\Client\Provider\Dropbox
+   * @return \Stevenmaguire\OAuth2\Client\Provider\Dropbox
    *   The initialized 3rd party library instance.
    *
    * @throws SocialApiException
@@ -156,7 +156,7 @@ class DropboxAuth extends NetworkBase implements DropboxAuthInterface {
         ];
       }
 
-      return new \Stevenmaguire\OAuth2\Client\Provider\Dropbox($league_settings);
+      return new Dropbox($league_settings);
     }
     return FALSE;
   }

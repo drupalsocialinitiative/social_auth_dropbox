@@ -7,6 +7,7 @@ use Drupal\social_api\Plugin\NetworkManager;
 use Drupal\social_auth\SocialAuthDataHandler;
 use Drupal\social_auth\SocialAuthUserManager;
 use Drupal\social_auth_dropbox\DropboxAuthManager;
+use League\OAuth2\Client\Tool\ArrayAccessorTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Routing\TrustedRedirectResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -16,6 +17,8 @@ use Drupal\Core\Logger\LoggerChannelFactoryInterface;
  * Returns responses for Simple Dropbox Connect module routes.
  */
 class DropboxAuthController extends ControllerBase {
+
+  use ArrayAccessorTrait;
 
   /**
    * The network plugin manager.
@@ -76,7 +79,12 @@ class DropboxAuthController extends ControllerBase {
    * @param \Drupal\Core\Logger\LoggerChannelFactoryInterface $logger_factory
    *   Used for logging errors.
    */
-  public function __construct(NetworkManager $network_manager, SocialAuthUserManager $user_manager, DropboxAuthManager $dropbox_manager, RequestStack $request, SocialAuthDataHandler $social_auth_data_handler, LoggerChannelFactoryInterface $logger_factory) {
+  public function __construct(NetworkManager $network_manager,
+                              SocialAuthUserManager $user_manager,
+                              DropboxAuthManager $dropbox_manager,
+                              RequestStack $request,
+                              SocialAuthDataHandler $social_auth_data_handler,
+                              LoggerChannelFactoryInterface $logger_factory) {
 
     $this->networkManager = $network_manager;
     $this->userManager = $user_manager;
@@ -113,7 +121,7 @@ class DropboxAuthController extends ControllerBase {
    * Redirects the user to Dropbox for authentication.
    */
   public function redirectToDropbox() {
-    /* @var \League\OAuth2\Client\Provider\Dropbox false $dropbox */
+    /* @var \Stevenmaguire\OAuth2\Client\Provider\Dropbox|false $dropbox */
     $dropbox = $this->networkManager->createInstance('social_auth_dropbox')->getSdk();
 
     // If dropbox client could not be obtained.
@@ -150,7 +158,7 @@ class DropboxAuthController extends ControllerBase {
       return $this->redirect('user.login');
     }
 
-    /* @var \League\OAuth2\Client\Provider\Dropbox false $dropbox */
+    /* @var \Stevenmaguire\OAuth2\Client\Provider\Dropbox|false $dropbox */
     $dropbox = $this->networkManager->createInstance('social_auth_dropbox')->getSdk();
 
     // If Dropbox client could not be obtained.
@@ -175,13 +183,18 @@ class DropboxAuthController extends ControllerBase {
     $this->dropboxManager->setClient($dropbox)->authenticate();
 
     // Gets user's info from Dropbox API.
+    /* @var \Stevenmaguire\OAuth2\Client\Provider\DropboxResourceOwner $dropbox_profile */
     if (!$dropbox_profile = $this->dropboxManager->getUserInfo()) {
       drupal_set_message($this->t('Dropbox login failed, could not load Dropbox profile. Contact site administrator.'), 'error');
       return $this->redirect('user.login');
     }
 
+    $response = $dropbox_profile->toArray();
+    $email = $this->getValueByKey($response, 'email');
+    $picture = $this->getValueByKey($response, 'https://dl-web.dropbox.com/account_photo/get/dbid%3AAABrxhzg_J_dV4ky76KJ5bZT6su7RW4qJ0o?size=128x128&vers=1515370030478');
+
     // If user information could be retrieved.
-    return $this->userManager->authenticateUser($dropbox_profile->getName(), $dropbox_profile->getEmail(), $dropbox_profile->getId(), $this->dropboxManager->getAccessToken(), '', '');
+    return $this->userManager->authenticateUser($dropbox_profile->getName(), $email, $dropbox_profile->getId(), $this->dropboxManager->getAccessToken(), $picture);
   }
 
 }
