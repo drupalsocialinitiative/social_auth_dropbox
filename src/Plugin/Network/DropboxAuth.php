@@ -17,7 +17,7 @@ use Drupal\Core\Site\Settings;
 /**
  * Defines a Network Plugin for Social Auth Dropbox.
  *
- * @package Drupal\simple_dropbox_connect\Plugin\Network
+ * @package Drupal\social_auth_dropbox\Plugin\Network
  *
  * @Network(
  *   id = "social_auth_dropbox",
@@ -66,7 +66,7 @@ class DropboxAuth extends NetworkBase implements DropboxAuthInterface {
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
     return new static(
-      $container->get('social_auth.social_auth_data_handler'),
+      $container->get('social_auth.data_handler'),
       $configuration,
       $plugin_id,
       $plugin_definition,

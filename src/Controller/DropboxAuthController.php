@@ -11,7 +11,6 @@ use League\OAuth2\Client\Tool\ArrayAccessorTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Routing\TrustedRedirectResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 
 /**
  * Returns responses for Simple Dropbox Connect module routes.
@@ -55,14 +54,6 @@ class DropboxAuthController extends ControllerBase {
    */
   private $dataHandler;
 
-
-  /**
-   * The logger channel.
-   *
-   * @var \Drupal\Core\Logger\LoggerChannelFactoryInterface
-   */
-  protected $loggerFactory;
-
   /**
    * DropboxAuthController constructor.
    *
@@ -76,22 +67,18 @@ class DropboxAuthController extends ControllerBase {
    *   Used to access GET parameters.
    * @param \Drupal\social_auth\SocialAuthDataHandler $social_auth_data_handler
    *   SocialAuthDataHandler object.
-   * @param \Drupal\Core\Logger\LoggerChannelFactoryInterface $logger_factory
-   *   Used for logging errors.
    */
   public function __construct(NetworkManager $network_manager,
                               SocialAuthUserManager $user_manager,
                               DropboxAuthManager $dropbox_manager,
                               RequestStack $request,
-                              SocialAuthDataHandler $social_auth_data_handler,
-                              LoggerChannelFactoryInterface $logger_factory) {
+                              SocialAuthDataHandler $social_auth_data_handler) {
 
     $this->networkManager = $network_manager;
     $this->userManager = $user_manager;
     $this->dropboxManager = $dropbox_manager;
     $this->request = $request;
     $this->dataHandler = $social_auth_data_handler;
-    $this->loggerFactory = $logger_factory;
 
     // Sets the plugin id.
     $this->userManager->setPluginId('social_auth_dropbox');
@@ -110,7 +97,7 @@ class DropboxAuthController extends ControllerBase {
       $container->get('social_auth.user_manager'),
       $container->get('social_auth_dropbox.manager'),
       $container->get('request_stack'),
-      $container->get('social_auth.social_auth_data_handler'),
+      $container->get('social_auth.data_handler'),
       $container->get('logger.factory')
     );
   }
@@ -173,7 +160,7 @@ class DropboxAuthController extends ControllerBase {
     $retrievedState = $this->request->getCurrentRequest()->query->get('state');
     if (empty($retrievedState) || ($retrievedState !== $state)) {
       $this->userManager->nullifySessionKeys();
-      drupal_set_message($this->t('Dropbox login failed. Unvalid oAuth2 State.'), 'error');
+      drupal_set_message($this->t('Dropbox login failed. Unvalid OAuth2 State.'), 'error');
       return $this->redirect('user.login');
     }
 

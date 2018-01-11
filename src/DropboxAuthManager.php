@@ -48,6 +48,7 @@ class DropboxAuthManager extends OAuth2Manager {
    * @var \Stevenmaguire\OAuth2\Client\Provider\Dropbox
    */
   protected $client;
+
   /**
    * The Dropbox access token.
    *
