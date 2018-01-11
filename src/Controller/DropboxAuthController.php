@@ -178,7 +178,7 @@ class DropboxAuthController extends ControllerBase {
 
     $response = $dropbox_profile->toArray();
     $email = $this->getValueByKey($response, 'email');
-    $picture = $this->getValueByKey($response, 'https://dl-web.dropbox.com/account_photo/get/dbid%3AAABrxhzg_J_dV4ky76KJ5bZT6su7RW4qJ0o?size=128x128&vers=1515370030478');
+    $picture = $this->getValueByKey($response, 'profile_photo_url');
 
     // If user information could be retrieved.
     return $this->userManager->authenticateUser($dropbox_profile->getName(), $email, $dropbox_profile->getId(), $this->dropboxManager->getAccessToken(), $picture);
