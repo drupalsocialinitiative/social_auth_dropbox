@@ -107,6 +107,22 @@ class DropboxAuthSettingsForm extends SocialAuthSettingsForm {
       '#default_value' => $GLOBALS['base_url'] . '/user/login/dropbox/callback',
     ];
 
+    $form['dropbox_settings']['advanced'] = [
+      '#type' => 'details',
+      '#title' => $this->t('Advanced settings'),
+      '#open' => FALSE,
+    ];
+
+    $form['dropbox_settings']['advanced']['endpoints'] = [
+      '#type' => 'textarea',
+      '#title' => $this->t('API calls to be made to collect data'),
+      '#default_value' => $config->get('endpoints'),
+      '#description' => $this->t('Define the Endpoints to be requested when user authenticates with Dropbox for the first time<br>
+                                  Enter each endpoint in different lines in the format <em>endpoint</em>|<em>name_of_endpoint</em>.<br>
+                                  <b>For instance:</b><br>
+                                  /2/sharing/list_folders|sharing_folders_list'),
+    ];
+
     return parent::buildForm($form, $form_state);
   }
 
@@ -116,8 +132,9 @@ class DropboxAuthSettingsForm extends SocialAuthSettingsForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $values = $form_state->getValues();
     $this->config('social_auth_dropbox.settings')
-      ->set('app_key', $values['app_key'])
-      ->set('app_secret', $values['app_secret'])
+      ->set('app_key', trim($values['app_key']))
+      ->set('app_secret', trim($values['app_secret']))
+      ->set('endpoints', $values['endpoints'])
       ->save();
 
     parent::submitForm($form, $form_state);

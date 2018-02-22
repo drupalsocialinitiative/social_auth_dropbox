@@ -8,3 +8,6 @@ social_auth_dropbox.settings:
     app_secret:
       type: string
       label: 'App Secret'
+    endpoints:
+      type: string
+      label: 'API Endpoints to be requested'

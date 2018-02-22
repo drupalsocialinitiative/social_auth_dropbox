@@ -121,9 +121,7 @@ class DropboxAuthController extends ControllerBase {
     $this->dropboxManager->setClient($dropbox);
 
     // Generates the URL where the user will be redirected for Dropbox login.
-    // If the user did not have email permission granted on previous attempt,
-    // we use the re-request URL requesting only the email address.
-    $dropbox_login_url = $this->dropboxManager->getDropboxLoginUrl();
+    $dropbox_login_url = $this->dropboxManager->getAuthorizationUrl();
 
     $state = $this->dropboxManager->getState();
 
@@ -170,18 +168,21 @@ class DropboxAuthController extends ControllerBase {
     $this->dropboxManager->setClient($dropbox)->authenticate();
 
     // Gets user's info from Dropbox API.
-    /* @var \Stevenmaguire\OAuth2\Client\Provider\DropboxResourceOwner $dropbox_profile */
-    if (!$dropbox_profile = $this->dropboxManager->getUserInfo()) {
+    /* @var \Stevenmaguire\OAuth2\Client\Provider\DropboxResourceOwner $profile */
+    if (!$profile = $this->dropboxManager->getUserInfo()) {
       drupal_set_message($this->t('Dropbox login failed, could not load Dropbox profile. Contact site administrator.'), 'error');
       return $this->redirect('user.login');
     }
 
-    $response = $dropbox_profile->toArray();
+    // Gets (or not) extra initial data.
+    $data = $this->userManager->checkIfUserExists($profile->getId()) ? NULL : $this->dropboxManager->getExtraDetails();
+
+    $response = $profile->toArray();
     $email = $this->getValueByKey($response, 'email');
     $picture = $this->getValueByKey($response, 'profile_photo_url');
 
     // If user information could be retrieved.
-    return $this->userManager->authenticateUser($dropbox_profile->getName(), $email, $dropbox_profile->getId(), $this->dropboxManager->getAccessToken(), $picture);
+    return $this->userManager->authenticateUser($profile->getName(), $email, $profile->getId(), $this->dropboxManager->getAccessToken(), $picture, $data);
   }
 
 }
