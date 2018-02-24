@@ -3,6 +3,7 @@ social_auth_dropbox.redirect_to_dropbox:
   defaults:
     _controller: '\Drupal\social_auth_dropbox\Controller\DropboxAuthController::redirectToDropbox'
   requirements:
+    # Anonymous users can log in, but authenticated users can also associate a new provider.
     _access: 'TRUE'
   options:
     no_cache: TRUE
@@ -12,6 +13,7 @@ social_auth_dropbox.callback:
   defaults:
     _controller: '\Drupal\social_auth_dropbox\Controller\DropboxAuthController::callback'
   requirements:
+    # Anonymous users can log in, but authenticated users can also associate a new provider.
     _access: 'TRUE'
   options:
     no_cache: TRUE
