@@ -120,7 +120,7 @@ class DropboxAuthController extends ControllerBase {
     // Dropbox service was returned, inject it to $dropboxManager.
     $this->dropboxManager->setClient($dropbox);
 
-    // Generates the URL where the user will be redirected for Dropbox login.
+    // Generates the URL where the user will be redirected for authentication.
     $dropbox_login_url = $this->dropboxManager->getAuthorizationUrl();
 
     $state = $this->dropboxManager->getState();
@@ -162,10 +162,10 @@ class DropboxAuthController extends ControllerBase {
       return $this->redirect('user.login');
     }
 
+    $this->dropboxManager->setClient($dropbox)->authenticate();
+
     // Saves access token to session.
     $this->dataHandler->set('access_token', $this->dropboxManager->getAccessToken());
-
-    $this->dropboxManager->setClient($dropbox)->authenticate();
 
     // Gets user's info from Dropbox API.
     /* @var \Stevenmaguire\OAuth2\Client\Provider\DropboxResourceOwner $profile */
