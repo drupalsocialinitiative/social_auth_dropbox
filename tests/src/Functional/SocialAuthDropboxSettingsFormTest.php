@@ -2,7 +2,7 @@
 
 namespace Drupal\Tests\social_auth_dropbox\Functional;
 
-use Drupal\social_api\SocialApiSettingsFormBaseTest;
+use Drupal\Tests\social_auth\Functional\SocialAuthTestBase;
 
 /**
  * Test Social Auth Dropbox settings form.
@@ -11,7 +11,7 @@ use Drupal\social_api\SocialApiSettingsFormBaseTest;
  *
  * @ingroup social_auth_dropbox
  */
-class SocialAuthDropboxSettingsFormTest extends SocialApiSettingsFormBaseTest {
+class SocialAuthDropboxSettingsFormTest extends SocialAuthTestBase {
 
   /**
    * Modules to enable.
@@ -25,23 +25,33 @@ class SocialAuthDropboxSettingsFormTest extends SocialApiSettingsFormBaseTest {
    */
   protected function setUp() {
     $this->module = 'social_auth_dropbox';
-    $this->socialNetwork = 'dropbox';
+    $this->provider = 'dropbox';
     $this->moduleType = 'social-auth';
 
     parent::setUp();
   }
 
   /**
-   * {@inheritdoc}
+   * Test if implementer is shown in the integration list.
    */
   public function testIsAvailableInIntegrationList() {
     $this->fields = ['app_key', 'app_secret'];
 
-    parent::testIsAvailableInIntegrationList();
+    $this->checkIsAvailableInIntegrationList();
   }
 
   /**
-   * {@inheritdoc}
+   * Test if permissions are set correctly for settings page.
+   *
+   * @throws \Behat\Mink\Exception\ElementNotFoundException
+   * @throws \Behat\Mink\Exception\ExpectationException
+   */
+  public function testPermissionForSettingsPage() {
+    $this->checkPermissionForSettingsPage();
+  }
+
+  /**
+   * Test settings form submission.
    */
   public function testSettingsFormSubmission() {
     $this->edit = [
@@ -49,7 +59,7 @@ class SocialAuthDropboxSettingsFormTest extends SocialApiSettingsFormBaseTest {
       'app_secret' => $this->randomString(10),
     ];
 
-    parent::testSettingsFormSubmission();
+    $this->checkSettingsFormSubmission();
   }
 
 }
