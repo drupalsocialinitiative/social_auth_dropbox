@@ -1,7 +1,7 @@
 social_auth_dropbox.redirect_to_dropbox:
   path: '/user/login/dropbox'
   defaults:
-    _controller: '\Drupal\social_auth_dropbox\Controller\DropboxAuthController::redirectToDropbox'
+    _controller: '\Drupal\social_auth_dropbox\Controller\DropboxAuthController::redirectToProvider'
   requirements:
     # Anonymous users can log in, but authenticated users can also associate a new provider.
     _access: 'TRUE'
