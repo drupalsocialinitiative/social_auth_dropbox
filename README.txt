@@ -37,8 +37,6 @@ INSTALLATION
  * Run composer to install dependencies:
    composer require "drupal/social_auth_dropbox:^2.0"
 
- * Install the dependencies: Social API and Social Auth.
-
  * Install as you would normally install a contributed Drupal module. See:
    https://drupal.org/documentation/install/modules-themes/modules-8
    for further information.
