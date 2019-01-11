@@ -7,6 +7,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Path\PathValidatorInterface;
 use Drupal\Core\Routing\RequestContext;
 use Drupal\Core\Routing\RouteProviderInterface;
+use Drupal\Core\Url;
 use Drupal\social_auth\Form\SocialAuthSettingsForm;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -104,7 +105,7 @@ class DropboxAuthSettingsForm extends SocialAuthSettingsForm {
       '#disabled' => TRUE,
       '#title' => $this->t('Authorized redirect URIs'),
       '#description' => $this->t('Copy this value to <em>Authorized redirect URIs</em> field of your Dropbox App settings.'),
-      '#default_value' => $GLOBALS['base_url'] . '/user/login/dropbox/callback',
+      '#default_value' => Url::fromRoute('social_auth_dropbox.callback')->setAbsolute()->toString(),
     ];
 
     $form['dropbox_settings']['advanced'] = [
