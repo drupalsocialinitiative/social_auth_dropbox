@@ -6,7 +6,7 @@ use Drupal\social_auth\AuthManager\OAuth2Manager;
 use Drupal\Core\Config\ConfigFactory;
 
 /**
- * Contains all the logic for Dropbox login integration.
+ * Contains all the logic for Dropbox OAuth2 authentication.
  */
 class DropboxAuthManager extends OAuth2Manager {
 
