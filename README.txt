@@ -83,7 +83,7 @@ SUPPORT REQUESTS
    admin/reports/dblog
 
  * Once you have done this, you can post a support request at module issue
-   queue: https://www.drupal.org/project/issues/social_auth_google
+   queue: https://www.drupal.org/project/issues/social_auth_dropbox
 
  * When posting a support request, please inform if you were able to see any
    errors in the Recent Log entries.
