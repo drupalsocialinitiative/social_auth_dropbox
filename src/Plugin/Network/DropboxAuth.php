@@ -43,7 +43,7 @@ class DropboxAuth extends NetworkBase implements DropboxAuthInterface {
       throw new SocialApiException(sprintf('The Dropbox library for PHP League OAuth2 not found. Class: %s.', $class_name));
     }
 
-    /* @var \Drupal\social_auth_dropbox\Settings\DropboxAuthSettings $settings */
+    /** @var \Drupal\social_auth_dropbox\Settings\DropboxAuthSettings $settings */
     $settings = $this->settings;
 
     if ($this->validateConfig($settings)) {
